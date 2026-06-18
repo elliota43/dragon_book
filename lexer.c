@@ -26,32 +26,34 @@ Token lexer_get_next_token(Lexer *lexer) {
     lexer_advance_char(lexer);
   }
 
+  int start_line = lexer->line;
+
   if (lexer->current_char == EOF) {
-    return (Token){.kind = TOK_EOF, .line = lexer->line};
+    return (Token){.kind = TOK_EOF, .line = start_line};
   }
 
   switch (lexer->current_char) {
   case '+':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_PLUS, .line = lexer->line};
+    return (Token){.kind = TOK_PLUS, .line = start_line};
   case '-':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_MINUS, .line = lexer->line};
+    return (Token){.kind = TOK_MINUS, .line = start_line};
   case '*':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_STAR, .line = lexer->line};
+    return (Token){.kind = TOK_STAR, .line = start_line};
   case '/':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_SLASH, .line = lexer->line};
+    return (Token){.kind = TOK_SLASH, .line = start_line};
   case '(':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_LPAREN, .line = lexer->line};
+    return (Token){.kind = TOK_LPAREN, .line = start_line};
   case ')':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_RPAREN, .line = lexer->line};
+    return (Token){.kind = TOK_RPAREN, .line = start_line};
   case ';':
     lexer_advance_char(lexer);
-    return (Token){.kind = TOK_SEMICOLON, .line = lexer->line};
+    return (Token){.kind = TOK_SEMICOLON, .line = start_line};
   }
 
   if (isdigit(lexer->current_char)) {
@@ -60,7 +62,7 @@ Token lexer_get_next_token(Lexer *lexer) {
       value = (value * 10) + (lexer->current_char - '0');
       lexer_advance_char(lexer);
     }
-    return (Token){.kind = TOK_NUMBER, .value = value, .line = lexer->line};
+    return (Token){.kind = TOK_NUMBER, .value = value, .line = start_line};
   }
 
   if (isalpha(lexer->current_char)) {
@@ -78,11 +80,11 @@ Token lexer_get_next_token(Lexer *lexer) {
     return (Token){
         .kind = sym->kind,
         .name = sym->name,
-        .line = lexer->line,
+        .line = start_line,
     };
   }
 
-  Token unknown_token = {.kind = TOK_UNKNOWN, .line = lexer->line};
+  Token unknown_token = {.kind = TOK_UNKNOWN, .line = start_line};
   lexer_advance_char(lexer);
   return unknown_token;
 }

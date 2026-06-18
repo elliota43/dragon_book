@@ -32,6 +32,8 @@ static const char *token_kind_name(TokenKind kind) {
     return "ERROR";
   case TOK_UNKNOWN:
     return "UNKNOWN";
+  case TOK_SEMICOLON:
+    return "SEMICOLON";
   default:
     return "?";
   }
